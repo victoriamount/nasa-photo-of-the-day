@@ -3,12 +3,12 @@ import axios from 'axios';
 import "./App.css";
 import dummyData from './dummyData';
 import PhotoText from './components/PhotoText';
+import PhotoSection from './components/PhotoSection'
+import styled from 'styled-components'
 
 function App() {
   const [date, setDate] = useState('2020-08-01')
   const [objWithPic, setOjbWithPic] = useState(dummyData)
-  const [photoTitle, setPhotoTitle] = useState(dummyData.title)
-  const [photoText, setPhotoText] = useState(dummyData.explanation)
   const apiKey = 'ODx3rLHxUQM1hepDUdGyqQngk9C8LxG70vQ7Nho7'
 
   console.log('app running')
@@ -19,9 +19,6 @@ function App() {
       axios.get(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${date}`)
         .then(res => {
           setOjbWithPic(res.data)
-          setPhotoTitle(res.data.title)
-          setPhotoText(res.data.explanation)
-          console.log('Inside main axios')
         })
         .catch(err => {
           console.log(err)
@@ -52,26 +49,20 @@ function App() {
   function runRandomDate(){
     let newRandomDate = randomDate(new Date(2010, 0, 1), new Date(2020, 10, 7));
     console.log(newRandomDate)
-    return newRandomDate;
+    return changeDate(newRandomDate);
   }
 
 
-  const PhotoSection = () => (
-    <div className='photoSection'>
-      {objWithPic && <img src={objWithPic.url} alt='NASAs Daily Photo' />}
-      <div className='photoText'>
-        <PhotoText objWithPic={objWithPic} date={date} photoTitle={photoTitle} photoText={photoText} />
-        <button onClick={()=>changeDate(runRandomDate())}>{`Showing ${date} 🚀 Click to Refresh`}</button>  
-      </div>
 
-    </div>
-  )
+
+
+
 
   return (
     <div className="App">
-      <PhotoSection />
+      <PhotoSection objWithPic={objWithPic} runRandomDate={runRandomDate} date={date} />
       <p>
-        A Victoria Mount Production<span role="img" aria-label='go!'>🚀</span>!
+        A Victoria Mount Secret Production!
         
       </p>
     </div>
